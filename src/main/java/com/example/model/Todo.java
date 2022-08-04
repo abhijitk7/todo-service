@@ -20,7 +20,7 @@ public class Todo implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private String username;
+    private String userName;
 
     private String description;
 
