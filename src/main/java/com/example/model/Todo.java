@@ -24,7 +24,7 @@ public class Todo implements Serializable {
 
     private String description;
 
-    @JsonFormat(pattern="dd-MMM-yyyy")
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date dateOfCompletion;
 
     private Boolean isCompleted;
