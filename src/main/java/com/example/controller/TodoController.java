@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.JsonPath;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequestMapping("/api")
+@Validated
 public class TodoController {
 
     @Autowired
@@ -32,8 +34,14 @@ public class TodoController {
     }
 
     @PostMapping("/todo")
-    public Todo addTodo(@RequestBody Todo todo){
+    public Todo addTodo(@RequestBody @Validated Todo todo){
         return this.todoRepository.save(todo);
+    }
+
+
+    @GetMapping("/todo/{id}")
+    public Todo getTodo(@PathVariable("id") Long todoId) {
+        return this.todoRepository.findById(todoId).orElseThrow(TodoNotFoundException::new);
     }
 
     @DeleteMapping("/todo/{id}")
@@ -42,7 +50,7 @@ public class TodoController {
     }
 
     @PutMapping("todo/{id}")
-    public Todo updateRecord(@PathVariable("id") Long todoId, @RequestBody Todo newTodo) {
+    public Todo updateRecord(@PathVariable("id") Long todoId, @RequestBody @Validated Todo newTodo) {
         return this.todoRepository.findById(todoId)
                 .map(todo -> {
                     todo.setDescription(newTodo.getDescription());
